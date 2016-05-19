@@ -20,6 +20,7 @@
         disableTimepicker: false,
         disableClearButton: false,
         defaultTime: null,
+        language: null,
         dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
         dateFilter: null,
         disableMonthYearSelector: false,
@@ -134,7 +135,7 @@
             date = ngModelCtrl.$modelValue ? parseDateString(ngModelCtrl.$modelValue) : null;
             setupCalendarView();
             setInputFieldValues(date);
-            scope.mainButtonStr = date ? $filter('date')(date, scope.labelFormat) : scope.placeholder;
+            scope.mainButtonStr = date ? scope.translateDate(null, date) /*$filter('date')(date, scope.labelFormat)*/ : scope.placeholder;
             return scope.invalid = ngModelCtrl.$invalid;
           };
           setInputFieldValues = function(val) {
@@ -384,18 +385,62 @@
             }
           };
           scope.initMonthSelector = function() {
-            scope.monthArray = [{ id: "00", name: "January" },
-                                { id: "01", name: "February" },
-                                { id: "02", name: "March" },
-                                { id: "03", name: "April" },
-                                { id: "04", name: "May" },
-                                { id: "05", name: "June" },
-                                { id: "06", name: "July" },
-                                { id: "07", name: "August" },
-                                { id: "08", name: "September" },
-                                { id: "09", name: "October" },
-                                { id: "10", name: "November" },
-                                { id: "11", name: "December" }];
+            if (attrs.language === 'zh') {
+              scope.monthArray = [{ id: "00", name: "一月" },
+                                  { id: "01", name: "二月" },
+                                  { id: "02", name: "三月" },
+                                  { id: "03", name: "四月" },
+                                  { id: "04", name: "五月" },
+                                  { id: "05", name: "六月" },
+                                  { id: "06", name: "七月" },
+                                  { id: "07", name: "八月" },
+                                  { id: "08", name: "九月" },
+                                  { id: "09", name: "十月" },
+                                  { id: "10", name: "十一月" },
+                                  { id: "11", name: "十二月" }];
+            }
+            if (attrs.language === 'es') {
+              scope.monthArray = [{ id: "00", name: "Enero" },
+                                  { id: "01", name: "Febrero" },
+                                  { id: "02", name: "Marzo" },
+                                  { id: "03", name: "Abril" },
+                                  { id: "04", name: "Mayo" },
+                                  { id: "05", name: "Junio" },
+                                  { id: "06", name: "Julio" },
+                                  { id: "07", name: "Agosto" },
+                                  { id: "08", name: "Setiembre" },
+                                  { id: "09", name: "Octubre" },
+                                  { id: "10", name: "Noviembre" },
+                                  { id: "11", name: "Diciembre" }];
+            }
+            if (attrs.language === 'fr') {
+              scope.monthArray = [{ id: "00", name: "Janvier" },
+                                  { id: "01", name: "Février" },
+                                  { id: "02", name: "Mars" },
+                                  { id: "03", name: "Avril" },
+                                  { id: "04", name: "Mai" },
+                                  { id: "05", name: "Juin" },
+                                  { id: "06", name: "Juillet" },
+                                  { id: "07", name: "Août" },
+                                  { id: "08", name: "Septembre" },
+                                  { id: "09", name: "Octobre" },
+                                  { id: "10", name: "Novembre" },
+                                  { id: "11", name: "Décembre" }];
+            }
+            if (attrs.language === 'en') {
+              scope.monthArray = [{ id: "00", name: "January" },
+                                  { id: "01", name: "February" },
+                                  { id: "02", name: "March" },
+                                  { id: "03", name: "April" },
+                                  { id: "04", name: "May" },
+                                  { id: "05", name: "June" },
+                                  { id: "06", name: "July" },
+                                  { id: "07", name: "August" },
+                                  { id: "08", name: "September" },
+                                  { id: "09", name: "October" },
+                                  { id: "10", name: "November" },
+                                  { id: "11", name: "December" }];
+            }
           };
           scope.setMonthSelector = function() {
             if (ngModelCtrl.$modelValue) scope.monthSelected = new Date(Date.parse(ngModelCtrl.$modelValue)).getUTCMonth();
@@ -453,10 +498,42 @@
               document.getElementById(elemID + '-selector-mobile').setAttribute("top", document.getElementById(elemID + '-si-mobile').offsetHeight);
               document.getElementById(elemID + '-selector-mobile').setAttribute("left", document.getElementById(elemID + '-si-mobile').offsetWidth);
             }, 10);
-          }
+          };
+          scope.translateDate = function(dateFormat, date) {
+            var monthArrayTranslate = [];
+            monthArrayTranslate['January'] = { 'en': 'January', 'es': 'Enero', 'zh': '一月', 'fr': 'Janvier' };
+            monthArrayTranslate['February'] = { 'en': 'February', 'es': 'Febrero', 'zh': '二月', 'fr': 'Février'};
+            monthArrayTranslate['March'] = { 'en': 'March', 'es': 'Marzo', 'zh': '三月', 'fr': 'Mars'};
+            monthArrayTranslate['April'] = { 'en': 'April', 'es': 'Abril', 'zh': '四月', 'fr': 'Avril'};
+            monthArrayTranslate['May'] = { 'en': 'May', 'es': 'Mayo', 'zh': '五月', 'fr': 'Mai'};
+            monthArrayTranslate['June'] = { 'en': 'June', 'es': 'Junio', 'zh': '六月', 'fr': 'Juin'};
+            monthArrayTranslate['July'] = { 'en': 'July', 'es': 'Julio', 'zh': '七月', 'fr': 'Juillet'};
+            monthArrayTranslate['August'] = { 'en': 'August', 'es': 'Agosto', 'zh': '八月', 'fr': 'Août'};
+            monthArrayTranslate['September'] = { 'en': 'September', 'es': 'Setiembre', 'zh': '九月', 'fr': 'Septembre'};
+            monthArrayTranslate['October'] = { 'en': 'October', 'es': 'Octubre', 'zh': '十月', 'fr': 'Octobre'};
+            monthArrayTranslate['November'] = { 'en': 'November', 'es': 'Noviembre', 'zh': '十一月', 'fr': 'Novembre'};
+            monthArrayTranslate['December'] = { 'en': 'December', 'es': 'Diciembre', 'zh': '十二月', 'fr': 'Décembre'};
+
+            if (date)
+              return monthArrayTranslate[$filter('date')(date, 'MMMM')][attrs.language] + ' ' + $filter('date')(date, 'd') + ', ' + $filter('date')(date, 'yyyy');
+            else
+              if (dateFormat === 'MMMM') return monthArrayTranslate[$filter('date')(scope.calendarDate, 'MMMM')][attrs.language];
+              else return monthArrayTranslate[$filter('date')(scope.calendarDate, 'MMMM')][attrs.language] + ' ' + $filter('date')(scope.calendarDate, 'yyyy');
+          };
 
           scope.dropDownMonthOpen = false;
           scope.dropDownYearOpen = false;
+
+          // lang source: http://fullcalendar.io/js/fullcalendar-2.7.1/demos/languages.html
+          if (attrs.language === 'zh') {
+            scope.dayAbbreviations = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+          }
+          if (attrs.language === 'es') {
+            scope.dayAbbreviations = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"];
+          }
+          if (attrs.language === 'fr') {
+            scope.dayAbbreviations = ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"];
+          }
 
           if (attrs.isMobile)
             scope.mobileScale();
@@ -489,21 +566,23 @@
                         "<a href='' class='quickdate-prev-month quickdate-action-link' ng-if='disableMonthYearSelector' tabindex='-1' ng-click='prevMonth()'>" +
                           "<div ng-bind-html='prevLinkHtml'></div>" +
                         "</a>\n" +
-                        "<span ng-if='disableMonthYearSelector' class='quickdate-month'>{{calendarDate | date:'MMMM yyyy'}}</span>\n" +
+                        "<span ng-if='disableMonthYearSelector' class='quickdate-month'>{{translateDate()}}</span>\n" +
                         "<span ng-if='!disableMonthYearSelector' class='quickdate-month'>" +
                           '<div class="quickdate-month-selector select-overflow">' +
                             '<div ng-show="isMobile" class="selectize-control single">' +
-                              '<select id="qdc-month-selector-mobile" class="native-mobile-dropdown" ng-model="monthSelected" ng-change="changeMonth(monthSelected)"><option ng-repeat="month in monthArray" ng-selected="monthSelected == month.id" value="{{month.id}}">{{month.name}}</option></select>' +
+                              '<select id="qdc-month-selector-mobile" class="native-mobile-dropdown" ng-model="monthSelected" ng-change="changeMonth(monthSelected)">' +
+                                '<option ng-repeat="month in monthArray" ng-selected="monthSelected == month.id" value="{{month.id}}">{{month.name}}</option>' +
+                              '</select>' +
                               '<div class="selectize-input" id="qdc-month-si-mobile">' +
                                 '<div class="ui-select-match">' +
-                                  '<span class="ng-binding ng-scope">{{calendarDate | date:\'MMMM\'}}</span>' +
+                                  '<span class="ng-binding ng-scope" ng-bind="translateDate(\'MMMM\')"></span>' +
                                 '</div>' +
                               '</div>' +
                             '</div>' +
                             '<div class="selectize-control single" ng-show="!isMobile" ng-click="toggleMonthSelector()">' +
                               '<div class="selectize-input">' +
                                 '<div class="ui-select-match">' +
-                                  '<span class="ng-binding ng-scope">{{calendarDate | date:\'MMMM\'}}</span>' +
+                                  '<span class="ng-binding ng-scope" ng-bind="translateDate(\'MMMM\')"></span>' +
                                 '</div>' +
                               '</div>' +
                               '<div ng-show="dropDownMonthOpen" class="ui-select-choices selectize-dropdown single" repeat="month in monthArray">' +
@@ -519,7 +598,9 @@
                           '</div>' +
                           '<div class="quickdate-year-selector select-overflow">' +
                             '<div ng-show="isMobile" class="selectize-control single">' +
-                              '<select id="qdc-year-selector-mobile" class="native-mobile-dropdown" ng-model="yearSelected" ng-change="changeYear(yearSelected)"><option ng-repeat="year in yearArray" ng-selected="yearSelected == year.name" value="{{year.name}}">{{year.name}}</option></select>' +
+                              '<select id="qdc-year-selector-mobile" class="native-mobile-dropdown" ng-model="yearSelected" ng-change="changeYear(yearSelected)">' +
+                                '<option ng-repeat="year in yearArray" ng-selected="yearSelected == year.name" value="{{year.name}}">{{year.name}}</option>' +
+                              '</select>' +
                               '<div class="selectize-input" id="qdc-year-si-mobile">' +
                                 '<div class="ui-select-match">' +
                                   '<span class="ng-binding ng-scope">{{calendarDate | date:\'yyyy\'}}</span>' +
